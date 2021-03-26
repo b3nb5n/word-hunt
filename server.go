@@ -25,9 +25,8 @@ func requestHandler(writer http.ResponseWriter, req *http.Request) {
 	}
 
 	board := createBoard(letters)
-	fmt.Printf("letters: %v\n", letters)
 	words := findAllWords(board, 4)
-	fmt.Printf("strings: %v\n", len(words))
+	words = filterWords(words)
 
 	res := "[ "
 	for i := 0; i < len(words); i++ {
