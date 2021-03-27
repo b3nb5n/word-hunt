@@ -1,19 +1,19 @@
-FROM golang:alpine
+FROM golang:1.16-buster as builder
 
-WORKDIR /src
+WORKDIR /app
 
-COPY go.mod .
-COPY go.sum .
+COPY go.* ./
 RUN go mod download
 
-COPY *.go .
+COPY *.go ./
 
-RUN go build -o main .
+RUN go build -mod=readonly -v -o server
 
-WORKDIR /build
+FROM debian:buster-slim
+RUN set -x && apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    ca-certificates && \
+    rm -rf /var/lib/apt/lists/*
 
-RUN mv /src/main .
+COPY --from=builder /app/server /app/server
 
-EXPOSE 8080
-
-CMD ["/build/main"]
+CMD ["/app/server"]

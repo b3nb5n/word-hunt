@@ -3,8 +3,6 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"math"
 	"net/http"
 	"strconv"
@@ -14,17 +12,9 @@ import (
 func requestHandler(writer http.ResponseWriter, req *http.Request) {
 	start := time.Now()
 
-	body, err := ioutil.ReadAll(req.Body)
-	if err != nil {
-		log.Panicf("Error reading body: %v", err)
-		http.Error(writer, "can't read body", http.StatusBadRequest)
-		return
-	}
-
 	var letters [16]string
-	err = json.Unmarshal(body, &letters)
+	err := json.NewDecoder(req.Body).Decode(&letters)
 	if err != nil {
-		log.Panicf("Error reading body: %v", err)
 		http.Error(writer, "invalid body", http.StatusBadRequest)
 		return
 	}
@@ -35,7 +25,6 @@ func requestHandler(writer http.ResponseWriter, req *http.Request) {
 	if len(depths) > 0 {
 		depth, err = strconv.Atoi(depths[0])
 		if err != nil {
-			log.Panicf("Error reading depth: %v", err)
 			http.Error(writer, "invalid depth", http.StatusBadRequest)
 			return
 		}
@@ -51,12 +40,11 @@ func requestHandler(writer http.ResponseWriter, req *http.Request) {
 	words = filterWords(words)
 	words = sortByLength(words)
 
-	res := "[ "
-	for i := 0; i < len(words); i++ {
-		res += words[i] + ", "
+	err = json.NewEncoder(writer).Encode(words)
+	if err != nil {
+		http.Error(writer, "error encoding response", 500)
+		return
 	}
-	res += "]"
 
 	fmt.Printf("total: %v\n\n", time.Since(start))
-	fmt.Fprint(writer, res)
 }
