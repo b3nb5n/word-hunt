@@ -21,8 +21,17 @@ func filterWords(src []string) []string {
 	}
 
 	isEnglishWord := func(word string) bool {
-		for i := 0; i < len(englishWords); i++ {
-			if englishWords[i] == word {
+		upper := len(englishWords) - 1
+		lower := 0
+
+		for lower <= upper {
+			mid := (lower + upper) / 2
+
+			if englishWords[mid] < word {
+				lower = mid + 1
+			} else if englishWords[mid] > word {
+				upper = mid - 1
+			} else {
 				return true
 			}
 		}
