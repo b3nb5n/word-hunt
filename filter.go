@@ -1,25 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
-	"log"
 	"time"
 )
 
 func filterWords(src []string) []string {
 	start := time.Now()
-	data, err := ioutil.ReadFile("words.json")
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	var englishWords []string
-	err = json.Unmarshal(data, &englishWords)
-	if err != nil {
-		log.Fatal(err)
-	}
 
 	isEnglishWord := func(word string) bool {
 		upper := len(englishWords) - 1

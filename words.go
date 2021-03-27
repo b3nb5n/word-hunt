@@ -1,4 +1,6 @@
-[
+package main
+
+var englishWords = []string{
   "a",
   "aa",
   "aah",
@@ -274935,5 +274937,5 @@
   "zyzzyva",
   "zyzzyvas",
   "zzz",
-  "zzzs"
-]
+  "zzzs",
+}
