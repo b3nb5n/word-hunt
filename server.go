@@ -5,10 +5,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"log"
+	"math"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 func requestHandler(writer http.ResponseWriter, req *http.Request) {
+	start := time.Now()
+
 	body, err := ioutil.ReadAll(req.Body)
 	if err != nil {
 		log.Panicf("Error reading body: %v", err)
@@ -24,8 +29,25 @@ func requestHandler(writer http.ResponseWriter, req *http.Request) {
 		return
 	}
 
+	depths := req.URL.Query()["depth"]
+	depth := 4
+
+	if len(depths) > 0 {
+		depth, err = strconv.Atoi(depths[0])
+		if err != nil {
+			log.Panicf("Error reading depth: %v", err)
+			http.Error(writer, "invalid depth", http.StatusBadRequest)
+			return
+		}
+
+		depth = int(math.Min(10, float64(depth)))
+		depth = int(math.Max(3, float64(depth)))
+	}
+
+	fmt.Printf("depth: %v\n", depth)
+
 	board := createBoard(letters)
-	words := findAllWords(board, 6)
+	words := findAllWords(board, depth)
 	words = filterWords(words)
 	words = sortByLength(words)
 
@@ -35,5 +57,6 @@ func requestHandler(writer http.ResponseWriter, req *http.Request) {
 	}
 	res += "]"
 
+	fmt.Printf("total: %v\n\n", time.Since(start))
 	fmt.Fprint(writer, res)
 }
