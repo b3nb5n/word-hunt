@@ -7,6 +7,7 @@ import (
 
 func filterWords(src []string, max int) []string {
 	start := time.Now()
+	var result []string
 
 	isEnglishWord := func(word string) bool {
 		upper := len(englishWords) - 1
@@ -27,13 +28,22 @@ func filterWords(src []string, max int) []string {
 		return false
 	}
 
-	var result []string
+	resultIncludes := func(target string) bool {
+		for i := 0; i < len(result); i++ {
+			if result[i] == target {
+				return true
+			}
+		}
+
+		return false
+	}
+
 	for i := 0; i < len(src) && len(result) < max; i++ {
-		if isEnglishWord(src[i]) {
+		if isEnglishWord(src[i]) && !resultIncludes(src[i]) {
 			result = append(result, src[i])
 		}
 	}
 
-	fmt.Printf("filter strings: %v\n", time.Since(start))
+	fmt.Printf("removed %v strings in %v\n", len(src)-len(result), time.Since(start))
 	return result
 }

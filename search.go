@@ -75,6 +75,6 @@ func findAllWords(board Board, depth int) []string {
 		}
 	}
 
-	fmt.Printf("get combinations: %v\n", time.Since(start))
+	fmt.Printf("found %v strings in %v\n", len(words), time.Since(start))
 	return words
 }

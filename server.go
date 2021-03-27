@@ -48,8 +48,8 @@ func requestHandler(writer http.ResponseWriter, req *http.Request) {
 
 	board := createBoard(letters)
 	words := findAllWords(board, depth)
-	words = filterWords(words, resultLim)
 	words = sortByLength(words)
+	words = filterWords(words, resultLim)
 
 	err = json.NewEncoder(writer).Encode(words)
 	if err != nil {
