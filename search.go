@@ -7,6 +7,7 @@ import (
 )
 
 func findAllWords(board Board, depth int) []string {
+	start := time.Now()
 	var words []string
 
 	addWord := func(path []*Tile) {
@@ -58,8 +59,6 @@ func findAllWords(board Board, depth int) []string {
 		search()
 	}
 
-	start := time.Now()
-
 	for srcI := 0; srcI < boardSize*boardSize; srcI++ {
 		srcRow := srcI / boardSize
 		srcCol := int(math.Mod(float64(srcI), float64(boardSize)))
@@ -77,6 +76,5 @@ func findAllWords(board Board, depth int) []string {
 	}
 
 	fmt.Printf("get combinations: %v\n", time.Since(start))
-
 	return words
 }

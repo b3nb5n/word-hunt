@@ -9,6 +9,7 @@ import (
 )
 
 func filterWords(src []string) []string {
+	start := time.Now()
 	data, err := ioutil.ReadFile("words.json")
 	if err != nil {
 		log.Fatal(err)
@@ -39,8 +40,6 @@ func filterWords(src []string) []string {
 		return false
 	}
 
-	start := time.Now()
-
 	i := 0
 	for i < len(src) {
 		if !isEnglishWord(src[i]) {
@@ -53,6 +52,5 @@ func filterWords(src []string) []string {
 	}
 
 	fmt.Printf("filter strings: %v\n", time.Since(start))
-
 	return src
 }
