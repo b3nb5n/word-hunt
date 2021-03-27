@@ -60,11 +60,11 @@ func findAllWords(board Board, depth int) []string {
 
 	start := time.Now()
 
-	for srcI := 0; srcI < boardSize; srcI++ {
+	for srcI := 0; srcI < boardSize*boardSize; srcI++ {
 		srcRow := srcI / boardSize
 		srcCol := int(math.Mod(float64(srcI), float64(boardSize)))
 
-		for dstI := 0; dstI < boardSize; dstI++ {
+		for dstI := 0; dstI < boardSize*boardSize; dstI++ {
 			if srcI == dstI {
 				continue
 			}

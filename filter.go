@@ -2,8 +2,10 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"log"
+	"time"
 )
 
 func filterWords(src []string) []string {
@@ -28,6 +30,8 @@ func filterWords(src []string) []string {
 		return false
 	}
 
+	start := time.Now()
+
 	i := 0
 	for i < len(src) {
 		if !isEnglishWord(src[i]) {
@@ -38,6 +42,8 @@ func filterWords(src []string) []string {
 			i++
 		}
 	}
+
+	fmt.Printf("filter strings: %v\n", time.Since(start))
 
 	return src
 }
