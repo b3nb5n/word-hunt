@@ -5,7 +5,7 @@ import (
 	"time"
 )
 
-func filterWords(src []string) []string {
+func filterWords(src []string, max int) []string {
 	start := time.Now()
 
 	isEnglishWord := func(word string) bool {
@@ -27,17 +27,13 @@ func filterWords(src []string) []string {
 		return false
 	}
 
-	i := 0
-	for i < len(src) {
-		if !isEnglishWord(src[i]) {
-			src[i] = src[len(src)-1]
-			src[len(src)-1] = ""
-			src = src[:len(src)-1]
-		} else {
-			i++
+	var result []string
+	for i := 0; i < len(src) && len(result) < max; i++ {
+		if isEnglishWord(src[i]) {
+			result = append(result, src[i])
 		}
 	}
 
 	fmt.Printf("filter strings: %v\n", time.Since(start))
-	return src
+	return result
 }

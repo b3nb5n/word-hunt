@@ -33,11 +33,22 @@ func requestHandler(writer http.ResponseWriter, req *http.Request) {
 		depth = int(math.Max(3, float64(depth)))
 	}
 
+	resultLims := req.URL.Query()["resultLim"]
+	resultLim := 128
+
+	if len(resultLims) > 0 {
+		resultLim, err = strconv.Atoi(resultLims[0])
+		if err != nil {
+			http.Error(writer, "invalid result limit", http.StatusBadRequest)
+			return
+		}
+	}
+
 	fmt.Printf("depth: %v\n", depth)
 
 	board := createBoard(letters)
 	words := findAllWords(board, depth)
-	words = filterWords(words)
+	words = filterWords(words, resultLim)
 	words = sortByLength(words)
 
 	err = json.NewEncoder(writer).Encode(words)
