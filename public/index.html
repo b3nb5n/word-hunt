@@ -12,24 +12,33 @@
 		<div class="container">
 			<div class="layout">
 				<div class="board">
-					<input type="text" class="tile" id="tile-0" />
-					<input type="text" class="tile" id="tile-1" />
-					<input type="text" class="tile" id="tile-2" />
-					<input type="text" class="tile" id="tile-3" />
-					<input type="text" class="tile" id="tile-4" />
-					<input type="text" class="tile" id="tile-5" />
-					<input type="text" class="tile" id="tile-6" />
-					<input type="text" class="tile" id="tile-7" />
-					<input type="text" class="tile" id="tile-8" />
-					<input type="text" class="tile" id="tile-9" />
-					<input type="text" class="tile" id="tile-10" />
-					<input type="text" class="tile" id="tile-11" />
-					<input type="text" class="tile" id="tile-12" />
-					<input type="text" class="tile" id="tile-13" />
-					<input type="text" class="tile" id="tile-14" />
-					<input type="text" class="tile" id="tile-15" />
+					<input type="text" class="tile" maxlength="1" value="a" />
+					<input type="text" class="tile" maxlength="1" value="b" />
+					<input type="text" class="tile" maxlength="1" value="c" />
+					<input type="text" class="tile" maxlength="1" value="d" />
+					<input type="text" class="tile" maxlength="1" value="e" />
+					<input type="text" class="tile" maxlength="1" value="f" />
+					<input type="text" class="tile" maxlength="1" value="g" />
+					<input type="text" class="tile" maxlength="1" value="h" />
+					<input type="text" class="tile" maxlength="1" value="i" />
+					<input type="text" class="tile" maxlength="1" value="j" />
+					<input type="text" class="tile" maxlength="1" value="k" />
+					<input type="text" class="tile" maxlength="1" value="l" />
+					<input type="text" class="tile" maxlength="1" value="m" />
+					<input type="text" class="tile" maxlength="1" value="n" />
+					<input type="text" class="tile" maxlength="1" value="o" />
+					<input type="text" class="tile" maxlength="1" value="p" />
 				</div>
-				<div class="controls"></div>
+				<div class="control_panel">
+					<section>
+						<div class="slider">
+							<label for="depth">Depth - 6</label>
+							<input type="range" min="3" max="10" value="6" id="depth" />
+						</div>
+						<button>Get Words</button>
+					</section>
+					<ol class="words_list"></ol>
+				</div>
 			</div>
 		</div>
 	</body>

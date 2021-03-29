@@ -5,57 +5,60 @@ import (
 	"fmt"
 	"math"
 	"net/http"
-	"strconv"
 	"time"
 )
 
-func requestHandler(writer http.ResponseWriter, req *http.Request) {
+type Body struct {
+	Letters [16]string
+	Depth   int
+	Limit   int
+}
+
+func requestHandler(w http.ResponseWriter, req *http.Request) {
 	start := time.Now()
 
-	var letters [16]string
-	err := json.NewDecoder(req.Body).Decode(&letters)
-	if err != nil {
-		http.Error(writer, "invalid body", http.StatusBadRequest)
+	fmt.Println("serving request...")
+	w.Header().Add("Access-Control-Allow-Origin", "*")
+	w.Header().Add("Access-Control-Allow-Methods", "POST, OPTIONS")
+	w.Header().Add("Access-Control-Allow-Headers", "Content-Type")
+
+	if req.Method == "OPTIONS" {
+		fmt.Print("configured CORS headers\n\n")
 		return
 	}
 
-	depths := req.URL.Query()["depth"]
-	depth := 4
-
-	if len(depths) > 0 {
-		depth, err = strconv.Atoi(depths[0])
-		if err != nil {
-			http.Error(writer, "invalid depth", http.StatusBadRequest)
-			return
-		}
-
-		depth = int(math.Min(10, float64(depth)))
-		depth = int(math.Max(3, float64(depth)))
+	var data Body
+	err := json.NewDecoder(req.Body).Decode(&data)
+	if err != nil {
+		http.Error(w, "invalid body", http.StatusBadRequest)
+		fmt.Printf("error reading request body: %v\n\n", err)
+		return
 	}
 
-	resultLims := req.URL.Query()["resultLim"]
-	resultLim := 128
+	data.Depth = int(math.Min(10, float64(data.Depth)))
+	data.Depth = int(math.Max(3, float64(data.Depth)))
 
-	if len(resultLims) > 0 {
-		resultLim, err = strconv.Atoi(resultLims[0])
-		if err != nil {
-			http.Error(writer, "invalid result limit", http.StatusBadRequest)
-			return
-		}
+	if data.Limit == 0 {
+		data.Limit = 128
+	} else {
+		data.Limit = int(math.Min(128, float64(data.Limit)))
 	}
 
-	fmt.Printf("depth: %v\n", depth)
+	fmt.Printf("depth: %v\n", data.Depth)
 
-	board := createBoard(letters)
-	words := findAllWords(board, depth)
+	board := createBoard(data.Letters)
+	words := findAllWords(board, data.Depth)
 	words = sortByLength(words)
-	words = filterWords(words, resultLim)
+	words = filterWords(words, data.Limit)
 
-	err = json.NewEncoder(writer).Encode(words)
+	res, err := json.Marshal(words)
 	if err != nil {
-		http.Error(writer, "error encoding response", 500)
+		http.Error(w, "error encoding response", 500)
+		fmt.Printf("error encoding response: %v\n\n", err)
 		return
 	}
+
+	fmt.Fprint(w, string(res))
 
 	fmt.Printf("total: %v\n\n", time.Since(start))
 }
