@@ -1,5 +1,5 @@
 let depth = 6;
-let limit = 12;
+let limit = 24;
 let loading = false;
 
 const button = document.querySelector('button');
@@ -11,10 +11,10 @@ button.onclick = async () => {
 	const endpoint =
 		location.hostname == 'localhost' || location.hostname == '127.0.0.1'
 			? 'http://localhost:8080'
-			: `https://${location.hostname}/api`;
+			: `https://word-hunt.web.app/api`;
 
 	loading = true;
-	button.innerText = 'One Sec...';
+	button.innerText = '...';
 
 	try {
 		const response = await fetch(endpoint, {
@@ -27,6 +27,11 @@ button.onclick = async () => {
 
 		const words = await response.json();
 		const wordsList = document.querySelector('ol');
+
+		while (wordsList.firstChild) {
+			wordsList.removeChild(wordsList.firstChild);
+		}
+
 		words.forEach((word) => {
 			const li = document.createElement('li');
 			li.className = 'word';
@@ -42,7 +47,8 @@ button.onclick = async () => {
 };
 
 document.querySelector('#depth').oninput = (e) => {
-	const { min, max, value } = e.target;
+	const { min, max } = e.target;
+	const value = parseInt(e.target.value);
 	const percentage = ((value - min) / (max - min)) * 100;
 
 	depth = value;
