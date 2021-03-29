@@ -51,14 +51,12 @@ func requestHandler(w http.ResponseWriter, req *http.Request) {
 	words = sortByLength(words)
 	words = filterWords(words, data.Limit)
 
-	res, err := json.Marshal(words)
+	err = json.NewEncoder(w).Encode(words)
 	if err != nil {
 		http.Error(w, "error encoding response", 500)
 		fmt.Printf("error encoding response: %v\n\n", err)
 		return
 	}
-
-	fmt.Fprint(w, string(res))
 
 	fmt.Printf("total: %v\n\n", time.Since(start))
 }
