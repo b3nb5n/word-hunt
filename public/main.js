@@ -1,5 +1,5 @@
 let depth = 6;
-let limit = 24;
+let limit = 16;
 let loading = false;
 
 const button = document.querySelector('button');
