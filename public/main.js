@@ -5,11 +5,11 @@ let loading = false;
 const board = document.querySelector('.board');
 board.style.height = `${board.clientWidth}px`;
 
-const button = document.querySelector('button');
+const button = document.querySelector('#get_words');
 button.onclick = async () => {
 	if (loading) return;
 	const tiles = Array.from(document.querySelectorAll('.tile'));
-	const letters = tiles.map((tile) => `${tile.value}`);
+	const letters = tiles.map((tile) => `${tile.value.toLowerCase()}`);
 
 	const endpoint =
 		location.hostname == 'localhost' || location.hostname == '127.0.0.1'
@@ -47,6 +47,16 @@ button.onclick = async () => {
 		loading = false;
 		button.innerText = 'Get Words';
 	}
+};
+
+document.querySelector('#randomize').onclick = () => {
+	const alphabet = 'abcdefghijklmnopqrstuvwxyz';
+	const tiles = Array.from(document.querySelectorAll('.tile'));
+
+	tiles.forEach((tile) => {
+		i = Math.round(Math.random() * 25);
+		tile.value = alphabet[i];
+	});
 };
 
 document.querySelector('#depth').oninput = (e) => {

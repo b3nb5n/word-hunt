@@ -31,6 +31,7 @@ body {
 	gap: 24px;
 	grid-template-columns: 2fr 1fr;
 	grid-template-rows: minmax(0, 1fr);
+	align-items: center;
 	max-height: 80vh;
 }
 
@@ -117,6 +118,7 @@ button {
 	cursor: pointer;
 	transform-origin: center;
 	width: 100%;
+	margin-bottom: 12px;
 }
 
 button:hover {
