@@ -28,16 +28,15 @@ body {
 .layout {
 	width: 100%;
 	display: grid;
+	gap: 24px;
 	grid-template-columns: 2fr 1fr;
 	grid-template-rows: minmax(0, 1fr);
 	max-height: 80vh;
 }
 
 .board {
-	width: 80vh;
-	max-width: 100%;
+	width: 100%;
 	max-height: 80vh;
-	aspect-ratio: 1 / 1;
 	display: grid;
 	grid-template-columns: repeat(4, 1fr);
 	grid-template-rows: repeat(4, 1fr);
@@ -135,4 +134,33 @@ button:hover {
 .word {
 	font-size: 18px;
 	margin: 4px 0;
+}
+
+@media (max-width: 991px) {
+	body,
+	html {
+		height: auto;
+	}
+
+	.container {
+		padding: 36px 0;
+	}
+
+	.board {
+		gap: 12px;
+		padding: 12px;
+	}
+
+	.tile {
+		font-size: 32px;
+	}
+
+	.layout {
+		grid-template-columns: 1fr;
+		grid-template-rows: min-content 1fr;
+	}
+
+	.control_panel {
+		grid-template-rows: min-content 1fr;
+	}
 }

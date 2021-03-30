@@ -2,6 +2,9 @@ let depth = 6;
 let limit = 16;
 let loading = false;
 
+const board = document.querySelector('.board');
+board.style.height = `${board.clientWidth}px`;
+
 const button = document.querySelector('button');
 button.onclick = async () => {
 	if (loading) return;
