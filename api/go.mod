@@ -1,3 +1,3 @@
-module github.com/baldwin-design-co/playground/word-hunt
+module word-hunt-api
 
 go 1.16
