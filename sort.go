@@ -1,35 +1,32 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
-
-func sortByLength(src []string) []string {
-	start := time.Now()
-	var buckets [10][]string
-
-	for i := 0; i < len(src); i++ {
-		length := len(src[i]) - 1
-		buckets[length] = append(buckets[length], src[i])
-	}
-
-	src = src[0:0]
-
-	i := 9
-	for i > 0 {
-		length := len(buckets[i])
-
-		if length > 0 {
-			src = append(src, buckets[i][length-1])
-			buckets[i][length-1] = ""
-			buckets[i] = buckets[i][:length-1]
-		} else {
-			buckets[i] = nil
-			i--
+func maxLen(paths []string) (max int) {
+	for _, path := range paths {
+		if len(path) > max {
+			max = len(path)
 		}
 	}
 
-	fmt.Printf("sorted %v strings in %v\n", len(src), time.Since(start))
-	return src
+	return max
+}
+
+func sortByLength(paths []string) []string {
+	const BASE = 3
+	rng := maxLen(paths) - BASE + 1
+	buckets := make([][]string, rng)
+
+	for _, path := range paths {
+		i := len(path) - BASE
+		buckets[i] = append(buckets[i], path)
+	}
+
+	var i int
+	for bi := rng - 1; bi >= 0; bi-- {
+		for _, path := range buckets[bi] {
+			paths[i] = path
+			i++
+		}
+	}
+
+	return paths
 }

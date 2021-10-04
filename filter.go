@@ -1,14 +1,6 @@
 package main
 
-import (
-	"fmt"
-	"time"
-)
-
-func filterWords(src []string, max int) []string {
-	start := time.Now()
-	var result []string
-
+func filterPaths(paths []string, limit int) (words []string) {
 	isEnglishWord := func(word string) bool {
 		upper := len(englishWords) - 1
 		lower := 0
@@ -29,8 +21,8 @@ func filterWords(src []string, max int) []string {
 	}
 
 	resultIncludes := func(target string) bool {
-		for i := 0; i < len(result); i++ {
-			if result[i] == target {
+		for i := 0; i < len(words); i++ {
+			if words[i] == target {
 				return true
 			}
 		}
@@ -38,12 +30,14 @@ func filterWords(src []string, max int) []string {
 		return false
 	}
 
-	for i := 0; i < len(src) && len(result) < max; i++ {
-		if isEnglishWord(src[i]) && !resultIncludes(src[i]) {
-			result = append(result, src[i])
+	for _, path := range paths {
+		if !resultIncludes(path) && isEnglishWord(path) {
+			words = append(words, path)
+			if len(words) == limit {
+				break
+			}
 		}
 	}
 
-	fmt.Printf("removed %v strings in %v\n", len(src)-len(result), time.Since(start))
-	return result
+	return words
 }
