@@ -2,8 +2,6 @@ package main
 
 const BOARD_SIZE = 4
 
-type Letters = [BOARD_SIZE * BOARD_SIZE]string
-
 type Board [BOARD_SIZE][BOARD_SIZE]*Tile
 
 type Tile struct {
@@ -16,7 +14,7 @@ type TileCoordinates struct {
 	col int
 }
 
-func createBoard(letters Letters) (board Board) {
+func createBoard(letters []string) (board Board) {
 	addEdge := func(src, dst *Tile) {
 		var adjacent bool
 
