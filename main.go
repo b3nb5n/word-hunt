@@ -10,9 +10,9 @@ func main() {
 	letters := Letters{"a", "c", "u", "q", "e", "f", "z", "x", "j", "y", "w", "l", "m", "n", "o", "p"}
 
 	board := createBoard(letters)
-	words := findAllPaths(board, DEPTH)
-	words = sortByLength(words)
-	words = filterPaths(words, LIMIT)
+	paths := findAllPaths(board, DEPTH)
+	sortByLength(paths)
+	words := filterPaths(paths, LIMIT)
 
 	fmt.Println(words)
 }
