@@ -1,32 +1,27 @@
 package main
 
-func maxLen(paths []string) (max int) {
-	for _, path := range paths {
-		if len(path) > max {
-			max = len(path)
+func dedupe(answers []Answer) (res []Answer) {
+	keys := make(map[string]bool)
+	for _, answer := range answers {
+		if _, found := keys[answer.word]; !found {
+			keys[answer.word] = true
+			res = append(res, answer)
 		}
 	}
 
-	return max
+	return res
 }
 
-func sortByLength(paths []string) []string {
-	const BASE = 3
-	rng := maxLen(paths) - BASE + 1
-	buckets := make([][]string, rng)
+func insertionSort(arr []Answer) {
+	for i := 1; i < len(arr); i++ {
+		key := arr[i]
+		i := i - 1
 
-	for _, path := range paths {
-		i := len(path) - BASE
-		buckets[i] = append(buckets[i], path)
-	}
-
-	var i int
-	for bi := rng - 1; bi >= 0; bi-- {
-		for _, path := range buckets[bi] {
-			paths[i] = path
-			i++
+		for i >= 0 && len(arr[i].word) < len(key.word) {
+			arr[i+1] = arr[i]
+			i--
 		}
-	}
 
-	return paths
+		arr[i+1] = key
+	}
 }
