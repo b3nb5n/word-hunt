@@ -13,6 +13,15 @@ const TILE_COUNT = BOARD_SIZE * BOARD_SIZE
 var board = [BOARD_SIZE]string{}
 var solutions = make([]Solution, 0)
 
+var score = map[int]int{
+	3: 100,
+	4: 400,
+	5: 800,
+	6: 1400,
+	7: 1800,
+	8: 2200,
+}
+
 func main() {
 	// Read letters from cli arguments
 	if len(os.Args) < 2 {
@@ -31,7 +40,7 @@ func main() {
 		board[i] = letters[BOARD_SIZE*i : BOARD_SIZE*(i+1)]
 	}
 
-	root, err := makeTrie()
+	root, err := makeTrie("./dictionary.txt")
 	if err != nil {
 		log.Fatalf("Error making trie: %v", err)
 	}

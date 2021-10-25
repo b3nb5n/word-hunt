@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"os"
 )
 
@@ -16,21 +17,31 @@ func newNode() *Node {
 	}
 }
 
-func makeTrie() (*Node, error) {
-	// Load dictionary file
+func readDictionary(path string, out chan string) error {
 	file, err := os.Open("./dictionary.txt")
 	if err != nil {
-		return nil, err
+		return fmt.Errorf("Error reading file %v: %v", path, err)
 	}
+
+	// Add each new word to the out channel
 	scanner := bufio.NewScanner(file)
-	defer file.Close()
+	for scanner.Scan() {
+		out <- scanner.Text()
+	}
+
+	file.Close()
+	close(out)
+	return nil
+}
+
+func makeTrie(dictPath string) (*Node, error) {
+	root := newNode()
+	wordChan := make(chan string)
+	go readDictionary(dictPath, wordChan)
 
 	// For each word (new line deliminated)
-	root := newNode()
-	for scanner.Scan() {
+	for word := range wordChan {
 		curr := root
-		word := scanner.Text()
-
 		for i, ch := range word {
 			// Add new letters to the nodes children
 			letter := string(ch)
