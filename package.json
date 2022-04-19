@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "vite",
 		"build": "tsc && vite build",
-		"build:wasm": "cd wasm && GOOS=js GOARCH=wasm go build -o  ../assets/word_hunt.wasm",
+		"build:wasm": "cd wasm && GOOS=js GOARCH=wasm go build -o ../assets/word_hunt.wasm",
 		"preview": "vite preview"
 	},
 	"dependencies": {

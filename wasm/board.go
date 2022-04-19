@@ -1,20 +1,21 @@
-package main
+package wasm
 
 const BOARD_SIZE = 4
 const TILE_COUNT = BOARD_SIZE * BOARD_SIZE
 
 type Board struct {
-	tiles [BOARD_SIZE][BOARD_SIZE]rune
-	solutions Solutions
+	Tiles [BOARD_SIZE][BOARD_SIZE]rune
+	Solutions Solutions
 }
 
-func makeBoard(letters [TILE_COUNT]rune) Board {
+// Returns a new `Board` with an instantiated solutions map and tiles populated from `letters`
+func MakeBoard(letters [TILE_COUNT]rune) Board {
 	board := Board {
-		solutions: make(Solutions),
+		Solutions: make(Solutions),
 	}
 
 	for i := 0; i < BOARD_SIZE; i++ {
-		copy(board.tiles[i][:], letters[BOARD_SIZE*i:BOARD_SIZE*(i+1)])
+		copy(board.Tiles[i][:], letters[BOARD_SIZE*i:BOARD_SIZE*(i+1)])
 	}
 
 	return board

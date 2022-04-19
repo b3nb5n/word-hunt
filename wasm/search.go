@@ -1,4 +1,4 @@
-package main
+package wasm
 
 import "strconv"
 
@@ -6,16 +6,16 @@ type Solutions map[string]string
 type VisitedMatrix = [BOARD_SIZE][BOARD_SIZE]bool
 
 // Recursivley searches for words on the board from the given trie node
-func (board *Board) search(row, col int, word, path string, visited VisitedMatrix, node *TrieNode) {
-	// Check if coordinates are in bounds
-	if row < 0 || row >= BOARD_SIZE || col < 0 || col >= BOARD_SIZE {
-		return
-	} else if visited[row][col] {
+func (board *Board) Search(row, col int, word, path string, visited VisitedMatrix, node *TrieNode) {
+	// Verify that the coordinates are in bounds and this tile hasn't already been visited
+	xInBounds := col >= 0 && col < BOARD_SIZE
+	yInBounds := row >= 0 && row < BOARD_SIZE
+	if !xInBounds || !yInBounds || visited[row][col] {
 		return
 	}
 
-	// Check if this character is a valid next ch
-	ch := board.tiles[row][col]
+	// Verify that this tile is a valid next character
+	ch := board.Tiles[row][col]
 	if _, found := node.children[ch]; !found {
 		return
 	}
@@ -24,7 +24,7 @@ func (board *Board) search(row, col int, word, path string, visited VisitedMatri
 	word += string(ch)
 	visited[row][col] = true
 	if node.children[ch].fullWord {
-		board.solutions[word] = path
+		board.Solutions[word] = path
 	}
 
 	// Recurse with every adjacent letter
@@ -33,13 +33,8 @@ func (board *Board) search(row, col int, word, path string, visited VisitedMatri
 			xDst := col + xStep
 			yDst := row + yStep
 
-			yInBounds := yDst >= 0 && yDst < BOARD_SIZE
-			xInBounds := xDst >= 0 && xDst < BOARD_SIZE
-
-			if yInBounds && xInBounds && !visited[yDst][xDst] {
-				newPath := path + ", (" + strconv.Itoa(xDst) + "," + strconv.Itoa(yDst) + ")"
-				board.search(yDst, xDst, word, newPath, visited, node.children[ch])
-			}
+			newPath := path + ", (" + strconv.Itoa(xDst) + "," + strconv.Itoa(yDst) + ")"
+			board.Search(yDst, xDst, word, newPath, visited, node.children[ch])
 		}
 	}
 
