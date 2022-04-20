@@ -1,4 +1,4 @@
-package wasm
+package main
 
 type TrieNode struct {
 	children map[rune]*TrieNode

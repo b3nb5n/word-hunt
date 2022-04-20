@@ -1,10 +1,16 @@
-package wasm
+package main
 
 import (
 	"fmt"
 	"strconv"
 	"syscall/js"
 )
+
+func main() {
+	quit := make(chan any)
+	js.Global().Set("hello", HelloJS())
+	<- quit
+}
 
 func FindWordsJS() js.Func {
 	return js.FuncOf(func (this js.Value, args []js.Value) any {

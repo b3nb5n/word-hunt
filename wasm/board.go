@@ -1,4 +1,4 @@
-package wasm
+package main
 
 const BOARD_SIZE = 4
 const TILE_COUNT = BOARD_SIZE * BOARD_SIZE
