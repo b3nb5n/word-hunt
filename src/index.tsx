@@ -1,13 +1,3 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import Board from './board'
-import BoardProvider from './board-provider'
-import './index.css'
+import { render } from 'solid-js/web'
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-	<React.StrictMode>
-		<BoardProvider>
-			<Board />
-		</BoardProvider>
-	</React.StrictMode>
-)
+render(() => <h1>Hello, world!</h1>, document.getElementById('root'))
