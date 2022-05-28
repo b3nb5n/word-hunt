@@ -1,3 +1,5 @@
 import { render } from 'solid-js/web'
+import Board from './board'
+import './index.css'
 
-render(() => <h1>Hello, world!</h1>, document.getElementById('root'))
+render(() => <Board></Board>, document.getElementById('root'))
